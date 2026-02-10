@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Firebase secrets
+*.json
+src/main/resources/firebase/
+
