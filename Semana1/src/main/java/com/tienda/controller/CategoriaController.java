@@ -1,4 +1,3 @@
-
 package com.tienda.controller;
 
 import com.tienda.domain.Categoria;
@@ -6,12 +5,10 @@ import com.tienda.service.CategoriaService;
 import jakarta.validation.Valid;
 import java.util.Locale;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,15 +24,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/categoria")
 public class CategoriaController {
     
-    @Autowired
-    private CategoriaService categoriaService;
-    
-    @Autowired
-    private MessageSource messageSource;
-    
-    @ModelAttribute("categoria")
-    public Categoria categoria() {
-        return new Categoria();
+    private final CategoriaService categoriaService;
+    private final MessageSource messageSource;
+
+    public CategoriaController(CategoriaService categoriaService, MessageSource messageSource) {
+        this.categoriaService = categoriaService;
+        this.messageSource = messageSource;
     }
     
     @GetMapping("/listado")
