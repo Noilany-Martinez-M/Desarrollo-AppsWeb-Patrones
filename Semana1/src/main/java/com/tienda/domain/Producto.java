@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Data;
 
+
 @Data
 @Entity
 @Table(name = "producto")
@@ -15,12 +16,12 @@ public class Producto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id producto")
+    @Column(name = "id_producto")
     private Integer idProducto;
-    private Integer idCategoria;
+//    private Integer idCategoria; ya no se usa por ala asociación
 
     @Column(nullable = false, length = 50)
-    @NotBlank(message = "La descripcion no puede estar vacia. ")
+    @NotBlank(message = "La descripción no puede estar vacía.")
     @Size(max = 50, message = "La descripción no puede tener más de 50 caracteres.")
     private String descripcion;
 
@@ -28,11 +29,11 @@ public class Producto implements Serializable {
     private String detalle;
 
     @Column(precision = 12, scale = 2)
-    @NotNull(message = "El precio no puede estar vacio. ")
+    @NotNull(message = "El precio no puede estar vacío.")
     @DecimalMin(value = "0.01", inclusive = true, message = "El precio debe ser mayor a 0.")
     private BigDecimal precio;
 
-    @NotNull(message = "El campo de existencias no puede estar vacio. ")
+    @NotNull(message = "El campo de existencias no puede estar vacío.")
     @Min(value = 0, message = "Las existencias deben ser un número mayor o igual a 0.")
     private Integer existencias;
 
@@ -40,20 +41,16 @@ public class Producto implements Serializable {
     private String rutaImagen;
     private boolean activo;
 
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
+
     public Integer getIdProducto() {
         return idProducto;
     }
 
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
-    }
-
-    public Integer getIdCategoria() {
-        return idCategoria;
-    }
-
-    public void setIdCategoria(Integer idCategoria) {
-        this.idCategoria = idCategoria;
     }
 
     public String getDescripcion() {
@@ -103,6 +100,15 @@ public class Producto implements Serializable {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
     
     
+
 }
