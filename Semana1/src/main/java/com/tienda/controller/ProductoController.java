@@ -3,11 +3,9 @@ package com.tienda.controller;
 import com.tienda.domain.Producto;
 import com.tienda.service.CategoriaService;
 import com.tienda.service.ProductoService;
-import com.tienda.service.ProductoService;
 import jakarta.validation.Valid;
 import java.util.Locale;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,50 +22,49 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProductoController {
 
     private final ProductoService productoService;
-    private final ProductoService ProductoService;
+    private final CategoriaService categoriaService;
     private final MessageSource messageSource;
 
-    public ProductoController(ProductoService productoService, ProductoService ProductoService, MessageSource messageSource) {
+    public ProductoController(ProductoService productoService, CategoriaService categoriaService, MessageSource messageSource) {
         this.productoService = productoService;
-        this.ProductoService = ProductoService;
+        this.categoriaService = categoriaService;
         this.messageSource = messageSource;
     }
-    
-    @Autowired
-    private CategoriaService categoriaService;
 
     @GetMapping("/listado")
     public String listado(Model model) {
         var productos = productoService.getProductos(false);
         model.addAttribute("productos", productos);
-        model.addAttribute("totalProductos", productos.size());
         var categorias = categoriaService.getCategorias(true);
-        model.addAttribute("Categorias", categorias);
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("totalProductos", productos.size());
         return "/producto/listado";
     }
 
     @PostMapping("/guardar")
     public String guardar(@Valid Producto producto, @RequestParam MultipartFile imagenFile, RedirectAttributes redirectAttributes) {
+
         productoService.save(producto, imagenFile);
-        redirectAttributes.addFlashAttribute("todoOk", messageSource.getMessage("mensaje. actualizado", null, Locale.getDefault()));
+        redirectAttributes.addFlashAttribute("todoOk", messageSource.getMessage("mensaje.actualizado", null, Locale.getDefault()));
+
         return "redirect:/producto/listado";
     }
 
     @PostMapping("/eliminar")
     public String eliminar(@RequestParam Integer idProducto, RedirectAttributes redirectAttributes) {
         String titulo = "todoOk";
-        String detalle = "mensaje. eliminado";
+        String detalle = "mensaje.eliminado";
         try {
             productoService.delete(idProducto);
         } catch (IllegalArgumentException e) {
             titulo = "error"; // Captura la excepción de argumento inválido para el mensaje de "no existe"
-            detalle = "cateogira.error01";
+            detalle = "producto.error01";
         } catch (IllegalStateException e) {
             titulo = "error"; // Captura la excepción de estado ilegal para el mensaje de "datos asociados"
-            detalle = "cateogira.error02";
+            detalle = "producto.error02";
         } catch (Exception e) {
-            titulo = "error"; // Captura cualquier otra excepción inesperada
-            detalle = "cateogira.error03";
+            titulo = "error";  // Captura cualquier otra excepción inesperada
+            detalle = "producto.error03";
         }
         redirectAttributes.addFlashAttribute(titulo, messageSource.getMessage(detalle, null, Locale.getDefault()));
         return "redirect:/producto/listado";
