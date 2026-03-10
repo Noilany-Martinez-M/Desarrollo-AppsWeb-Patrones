@@ -78,4 +78,24 @@ public class ProductoService {
     public List<Producto> consultaSQL(double precioInf, double precioSup){
         return productoRepository.consultaSQL(precioInf, precioSup);
     }
+    
+    //---------------------------[practica2]-----------------------------
+    
+    //consulta derivada
+    @Transactional(readOnly = true)
+    public List<Producto> consultaDerivadaPractica(double precioMin, double precioMax, int existenciasMin, String descripcionCategoria){
+        return productoRepository.findByActivoTrueAndPrecioBetweenAndExistenciasGreaterThanAndCategoria_ActivoTrueAndCategoria_DescripcionContainingOrderByPrecioAsc(precioMin, precioMax, existenciasMin, descripcionCategoria);
+    }
+    
+    //consulta x JPQL
+    @Transactional(readOnly = true)
+    public List<Producto> consultaJPQLPractica(double precioMin, double precioMax, int existenciasMin, String descripcionCategoria){
+        return productoRepository.consultaJPQLPractica(precioMin, precioMax, existenciasMin, descripcionCategoria);
+    }
+    
+    //consulta sql
+    @Transactional(readOnly = true)
+    public List<Producto> consultaSQLPractica(double precioMin, double precioMax, int existenciasMin, String descripcionCategoria){
+        return productoRepository.consultaSQLPractica(precioMin, precioMax, existenciasMin, descripcionCategoria);
+    }
 }

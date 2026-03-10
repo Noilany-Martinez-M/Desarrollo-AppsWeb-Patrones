@@ -62,14 +62,21 @@
                 </div>
             </div>
         </section>
-
+        
+        <!-- llamadas a los metodos del controller -->
         <section th:fragment='consultas' class='row row-cols-4 p-2'>
             <div th:replace="~{consultas/fragmentos :: formConsulta('primary',#{consultas.derivadas},'/consultas/consultaDerivada')}"/>
             <div th:replace="~{consultas/fragmentos :: formConsulta('warning',#{consultas.jpql},'/consultas/consultaJPQL')}"/>
             <div th:replace="~{consultas/fragmentos :: formConsulta('success',#{consultas.sql},'/consultas/consultaSQL')}"/>
-            <div class='card'><p>Acá va su Práctica #2</p></div>
+            
+            <!-- practica 2 -->
+            <div th:replace="~{consultas/fragmentos :: formConsultaPractica('success',#{consultas.derivadas},'/consultas/consultaDerivadaPractica')}"/>
+            <div th:replace="~{consultas/fragmentos :: formConsultaPractica('warning',#{consultas.jpql},'/consultas/consultaJPQLPractica')}"/>
+            <div th:replace="~{consultas/fragmentos :: formConsultaPractica('primary',#{consultas.sql},'/consultas/consultaSQLPractica')}"/>
+            
         </section>
 
+        <!-- vista de la clase -->
         <div th:fragment='formConsulta(colorForm, textoForm, urlForm)'>
             <form method="post" th:action='@{${urlForm}}' class='was-validated'>
                 <div class='card p-2'>
@@ -96,5 +103,44 @@
                 </div>
             </form>
         </div>
+        
+        <!-- vista para la practica -->
+        <div th:fragment='formConsultaPractica(colorForm, textoForm, urlForm)'>
+            <form method="post" th:action='@{${urlForm}}' class='was-validated'>
+                <div class='card p-2'>
+                    <div class="card-header text-center text-white" th:classappend="${'bg-'+colorForm}">
+                        <h5>[[${textoForm}]]</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class='mb-3'>
+                            <label>Precio mínimo</label>
+                            <input type="number" name='precioMin' th:value='${precioMin}'
+                                   class='form-control' min="0" required="required"/>
+                        </div>
+                        <div class='mb-3'>
+                            <label>Precio máximo</label>
+                            <input type="number" name='precioMax' th:value='${precioMax}'
+                                   class='form-control' min="0" required="required"/>
+                        </div>
+                        <div class='mb-3'>
+                            <label>Existencias mínimas</label>
+                            <input type="number" name='existenciasMin' th:value='${existenciasMin}'
+                                   class='form-control' min="0" required="required"/>
+                        </div>
+                        <div class='mb-3'>
+                            <label>Descripción de categoría</label>
+                            <input type="text" name='descripcionCategoria' th:value='${descripcionCategoria}'
+                                   class='form-control' required="required"/>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type='submit' class='btn text-white' th:classappend="${'btn-'+colorForm}">
+                            <i class='fa-solid fa-magnifying-glass'></i> [[${textoForm}]]
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
     </body>
 </html>
