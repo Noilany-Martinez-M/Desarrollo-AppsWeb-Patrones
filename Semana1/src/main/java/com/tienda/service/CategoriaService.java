@@ -64,5 +64,26 @@ public class CategoriaService {
             throw new IllegalStateException("No se puede eliminar la categoria, tiene datos asociados", e);
         }
     }
+    
+    //-------------------------[PRACTICA 2]----------------
+     
+    // Método derivado
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaDerivadaCategoria(String textoDescripcion) {
+        return categoriaRepository.findByActivoTrueAndDescripcionContaining(textoDescripcion);
+    }
+
+    //JPQL
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaCategoriaJPQL(String textoDescripcion) {
+        return categoriaRepository.consultaCategoriaJPQL(textoDescripcion);
+    }
+
+    //SQL nativa
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaCategoriaSQL(String textoDescripcion) {
+        return categoriaRepository.consultaCategoriaSQL(textoDescripcion);
+    }
+
 }
  

@@ -1,5 +1,6 @@
 package com.tienda.controller;
 
+import com.tienda.service.CategoriaService;
 import com.tienda.service.ProductoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ConsultaController {
 
     private final ProductoService productoService;
-
+    
+    //se cambia el constructor a uno doble
     public ConsultaController(ProductoService productoService) {
         this.productoService = productoService;
     }
-
+    
     @GetMapping("/listado")
     public String listado(Model model) {
         var lista = productoService.getProductos(false);
@@ -54,4 +56,51 @@ public class ConsultaController {
         model.addAttribute("precioSup", precioSup);
         return "/consultas/listado";
     }
+    
+    //----------------------------[practica2]----------------------
+    
+    @PostMapping("/consultaDerivadaPractica")
+    public String consultaDerivadaPractica(@RequestParam() double precioMin,
+            @RequestParam() double precioMax,
+            @RequestParam() int existenciasMin,
+            @RequestParam() String descripcionCategoria, Model model){
+        var lista = productoService.consultaDerivadaPractica(precioMin, precioMax, existenciasMin, descripcionCategoria);
+        model.addAttribute("productos", lista);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
+        model.addAttribute("existenciasMin", existenciasMin);
+        model.addAttribute("descripcionCategoria", descripcionCategoria);
+        return "/consultas/listado";
+    }
+    
+    @PostMapping("/consultaJPQLPractica")
+    public String consultaJPQLPractica(@RequestParam() double precioMin,
+            @RequestParam() double precioMax,
+            @RequestParam() int existenciasMin,
+            @RequestParam() String descripcionCategoria, Model model){
+        var lista = productoService.consultaJPQLPractica(precioMin, precioMax, existenciasMin, descripcionCategoria);
+        model.addAttribute("productos", lista);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
+        model.addAttribute("existenciasMin", existenciasMin);
+        model.addAttribute("descripcionCategoria", descripcionCategoria);
+        return "/consultas/listado";
+    }
+    
+    @PostMapping("/consultaSQLPractica")
+    public String consultaSQLPractica(@RequestParam() double precioMin,
+            @RequestParam() double precioMax,
+            @RequestParam() int existenciasMin,
+            @RequestParam() String descripcionCategoria, Model model){
+        var lista = productoService.consultaSQLPractica(precioMin, precioMax, existenciasMin, descripcionCategoria);
+        model.addAttribute("productos", lista);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
+        model.addAttribute("existenciasMin", existenciasMin);
+        model.addAttribute("descripcionCategoria", descripcionCategoria);
+        return "/consultas/listado";
+    }
+    
+    
+    
 }
